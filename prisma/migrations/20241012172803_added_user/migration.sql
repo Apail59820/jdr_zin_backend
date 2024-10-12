@@ -1,0 +1,15 @@
+-- CreateTable
+CREATE TABLE "User" (
+    "id" INTEGER NOT NULL,
+    "name" TEXT NOT NULL,
+    "level" INTEGER NOT NULL DEFAULT 0,
+    "money" INTEGER NOT NULL DEFAULT 0,
+    "health" INTEGER NOT NULL DEFAULT 3,
+    "maxHealth" INTEGER NOT NULL DEFAULT 3,
+    "mana" INTEGER NOT NULL DEFAULT 3,
+    "maxMana" INTEGER NOT NULL DEFAULT 3,
+    "energy" INTEGER NOT NULL DEFAULT 3,
+    "maxEnergy" INTEGER NOT NULL DEFAULT 3,
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
