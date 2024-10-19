@@ -9,14 +9,17 @@ export class UserRepository {
   }
 
   async createUser(data: Partial<UserModel>): Promise<User> {
-    return this.prisma.user.create({
-      data,
-    } as any);
+    return this.prisma.user.create(data as any);
   }
 
   async getUserById(id: number): Promise<User | null> {
     return this.prisma.user.findUnique({
       where: { id },
+    });
+  }
+  async getActiveUser(): Promise<User | null> {
+    return this.prisma.user.findFirst({
+      where: { isActiveUser: true },
     });
   }
 }

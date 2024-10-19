@@ -9,6 +9,9 @@ jest.mock("@prisma/client", () => {
         user: {
           create: jest.fn().mockResolvedValue({ id: 1, name: "John Doe" }),
           findUnique: jest.fn().mockResolvedValue({ id: 1, name: "John Doe" }),
+          findFirst: jest
+            .fn()
+            .mockResolvedValue({ id: 1, name: "John Doe", isActiveUser: true }),
         },
       };
     }),
@@ -42,6 +45,17 @@ describe("UserService", () => {
     expect(user).toBeNull();
   });
 
+  it("should get the active user successfully", async () => {
+    const activeUser = await userService.getActiveUser();
+    expect(activeUser).toEqual({ id: 1, name: "John Doe", isActiveUser: true });
+  });
+
+  it("should return null if no active user found", async () => {
+    (prisma.user.findFirst as jest.Mock).mockResolvedValueOnce(null);
+    const activeUser = await userService.getActiveUser();
+    expect(activeUser).toBeNull();
+  });
+
   it("should handle error when creating user fails", async () => {
     (prisma.user.create as jest.Mock).mockRejectedValueOnce(
       new Error("Failed to create user"),
@@ -59,6 +73,16 @@ describe("UserService", () => {
 
     await expect(userService.getUserById(1)).rejects.toThrow(
       "Failed to get user",
+    );
+  });
+
+  it("should handle error when getting active user fails", async () => {
+    (prisma.user.findFirst as jest.Mock).mockRejectedValueOnce(
+      new Error("Failed to get active user"),
+    );
+
+    await expect(userService.getActiveUser()).rejects.toThrow(
+      "Failed to get active user",
     );
   });
 });

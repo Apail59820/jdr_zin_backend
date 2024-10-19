@@ -9,4 +9,6 @@ export type UserModel = {
   maxMana: number;
   energy: number;
   maxEnergy: number;
+
+  isActiveUser: boolean;
 };

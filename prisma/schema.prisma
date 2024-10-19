@@ -29,4 +29,6 @@ model User {
   medicine     Int @default(0)
   charisma     Int @default(0)
   marksman     Int @default(0)
+
+  isActiveUser Boolean @default(false)
 }

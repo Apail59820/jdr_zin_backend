@@ -1,6 +1,6 @@
 import { UserRepository } from "../repositories/userRepository";
 import { User } from "@prisma/client";
-import {UserModel} from "../models/userModel";
+import { UserModel } from "../models/userModel";
 
 export class UserService {
   private userRepository: UserRepository;
@@ -15,5 +15,9 @@ export class UserService {
 
   async getUserById(id: number): Promise<User | null> {
     return await this.userRepository.getUserById(id);
+  }
+
+  async getActiveUser(): Promise<User | null> {
+    return await this.userRepository.getActiveUser();
   }
 }
