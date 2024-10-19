@@ -23,7 +23,6 @@ export class UserController {
   }
 
   async getUserById(req: Request, res: Response): Promise<void> {
-    console.log("wtf")
     try {
       const userId = parseInt(req.params.id);
       const user = await this.userService.getUserById(userId);
