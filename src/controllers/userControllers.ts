@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
 import { UserService } from "../services/userService";
+import LoggerSingleton from "../utils/winston";
+
+const logger = LoggerSingleton.getLogger();
 
 export class UserController {
   private userService: UserService;
@@ -15,6 +18,22 @@ export class UserController {
       res.status(201).json(newUser);
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });
+      logger.error(error);
+    }
+  }
+
+  async getUserById(req: Request, res: Response): Promise<void> {
+    try {
+      const userId = parseInt(req.params.id);
+      const user = await this.userService.getUserById(userId);
+      if (user) {
+        res.status(200).json(user);
+      } else {
+        res.status(404).json({ error: "User not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: "Internal Server Error" });
+      logger.error(error);
     }
   }
 }

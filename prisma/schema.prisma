@@ -18,4 +18,15 @@ model User {
   maxMana   Int    @default(3)
   energy    Int    @default(3)
   maxEnergy Int    @default(3)
+
+  strength     Int @default(0)
+  constitution Int @default(0)
+  perception   Int @default(0)
+  dexterity    Int @default(0)
+  intelligence Int @default(0)
+  crafting     Int @default(0)
+  magic        Int @default(0)
+  medicine     Int @default(0)
+  charisma     Int @default(0)
+  marksman     Int @default(0)
 }

@@ -16,4 +16,8 @@ router.post("/", validateUser, (req: Request, res: Response) =>
   userController.createUser(req, res),
 );
 
+router.get("/:id", (req: Request, res: Response) =>
+  userController.getUserById(req, res),
+);
+
 export default router;
