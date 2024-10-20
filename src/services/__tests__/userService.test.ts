@@ -8,6 +8,7 @@ jest.mock("@prisma/client", () => {
       return {
         user: {
           create: jest.fn(),
+          update: jest.fn(),
           findUnique: jest.fn(),
           findFirst: jest.fn(),
         },
@@ -98,5 +99,59 @@ describe("UserService", () => {
         "Failed to get active user",
       );
     });
+  });
+});
+
+describe("updateUser", () => {
+  beforeEach(() => {
+    (prisma.user.update as jest.Mock).mockResolvedValue(mockUser);
+    (prisma.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("should update a user successfully", async () => {
+    const userId = 1;
+    const userData = { name: "Updated John" };
+
+    const updatedUser = await userService.updateUser(userId, userData);
+
+    expect(updatedUser).toEqual(mockUser);
+    expect(prisma.user.findUnique).toHaveBeenCalledWith({
+      where: { id: userId },
+    });
+    expect(prisma.user.update).toHaveBeenCalledWith({
+      where: { id: userId },
+      data: userData,
+    });
+  });
+
+  it("should return null if user not found", async () => {
+    (prisma.user.findUnique as jest.Mock).mockResolvedValueOnce(null);
+
+    const userId = 999;
+    const userData = { name: "Non-existent user" };
+    const result = await userService.updateUser(userId, userData);
+
+    expect(result).toBeNull();
+    expect(prisma.user.findUnique).toHaveBeenCalledWith({
+      where: { id: userId },
+    });
+    expect(prisma.user.update).not.toHaveBeenCalled();
+  });
+
+  it("should handle error when updating user fails", async () => {
+    (prisma.user.update as jest.Mock).mockRejectedValueOnce(
+      new Error("Failed to update user"),
+    );
+
+    const userId = 1;
+    const userData = { name: "John Doe" };
+
+    await expect(userService.updateUser(userId, userData)).rejects.toThrow(
+      "Failed to update user",
+    );
   });
 });

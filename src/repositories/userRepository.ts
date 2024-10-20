@@ -22,4 +22,17 @@ export class UserRepository {
       where: { isActiveUser: true },
     });
   }
+
+  async updateUser(id: number, data: Partial<UserModel>): Promise<User | null> {
+    const user = await this.prisma.user.findUnique({ where: { id } });
+
+    if (!user) {
+      return null;
+    }
+
+    return this.prisma.user.update({
+      where: { id },
+      data,
+    });
+  }
 }

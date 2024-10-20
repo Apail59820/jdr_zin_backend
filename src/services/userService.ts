@@ -20,4 +20,8 @@ export class UserService {
   async getActiveUser(): Promise<User | null> {
     return await this.userRepository.getActiveUser();
   }
+
+  async updateUser(id: number, data: Partial<UserModel>): Promise<User | null> {
+    return await this.userRepository.updateUser(id, data);
+  }
 }

@@ -17,12 +17,15 @@ router.post("/", validateUser, (req: Request, res: Response) =>
 );
 
 router.get("/active/", (req: Request, res: Response) =>
-    userController.getActiveUser(req, res),
+  userController.getActiveUser(req, res),
 );
 
 router.get("/:id", (req: Request, res: Response) =>
   userController.getUserById(req, res),
 );
 
+router.patch("/:id", (req: Request, res: Response) =>
+  userController.updateUser(req, res),
+);
 
 export default router;

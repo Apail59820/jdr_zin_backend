@@ -49,4 +49,22 @@ export class UserController {
       res.status(500).json({ error: "Internal Server Error" });
     }
   }
+
+  async updateUser(req: Request, res: Response): Promise<void> {
+    try {
+      const userId = parseInt(req.params.id);
+      const userData = req.body;
+
+      const updatedUser = await this.userService.updateUser(userId, userData);
+
+      if (updatedUser) {
+        res.status(200).json(updatedUser);
+      } else {
+        res.status(404).json({ error: "User not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: "Internal Server Error" });
+      logger.error(error);
+    }
+  }
 }
