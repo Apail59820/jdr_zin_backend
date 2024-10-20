@@ -30,5 +30,7 @@ model User {
   charisma     Int @default(0)
   marksman     Int @default(0)
 
+  class String @default("")
+
   isActiveUser Boolean @default(false)
 }
